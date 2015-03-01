@@ -1,19 +1,25 @@
 <h1>Quotes FTW</h1>
 
+<h3>Search!</h3>
+<form method="get" action="/search">
+  <label>Search for terms:</label>
+  <input type="text" name="terms" value="<%= params[:terms] %>">
+
+</form>
+
+<h3>Cool Searches</h3>
+<% @cool_searches.each do |term| %>
+  <p>Check out <a href="/search?terms=<%= term %>"><%= term %></a></p>
+<% end %>
+
+<h3>Authors!</h3>
+
 <% @quotes.each do |quote| %>
   <blockquote><p><%=quote[:quote]%></p>
     <footer>
-      <cite><%=quote[:author]%></cite>
+      <cite><a href="/author/<%= quote[:author] %>"><%= quote[:author] %></a></cite>
     </footer>
   </blockquote>
-  <!-- TIL: http://html5doctor.com/cite-and-blockquote-reloaded/ -->
 <% end %>
 
-<h3>Search!</h3>
-<p>Wish there was a search field...</p>
 
-<h5>Cool Searches</h5>
-<p>Wish there was a list of recommended searches...</p>
-
-<h3>Authors!</h3>
-<p>Wish there was a list of authors and links to their pages...</p>

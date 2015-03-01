@@ -1,0 +1,9 @@
+<h1><%= @author %></h1>
+
+<% @results.each do |quote| %>
+  <blockquote><p><%=quote[:quote]%></p>
+    <footer>
+      <cite><a href="/author/<%=quote[:author]%>"><%=quote[:author]%></a></cite>
+    </footer>
+  </blockquote>
+<% end %>

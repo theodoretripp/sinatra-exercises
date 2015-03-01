@@ -1,0 +1,10 @@
+<h1>Search Results</h1>
+
+<% @unique_results.each do |result| %>
+  <blockquote><p><%=result[:quote]%></p>
+    <footer>
+      <cite><%=result[:author]%></cite>
+    </footer>
+  </blockquote>
+<% end %>
+

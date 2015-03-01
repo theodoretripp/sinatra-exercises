@@ -43,28 +43,26 @@ QUOTES=[{ :author => "E. W. Dijkstra", :quote => "The computing scientist’s
           acquainted with." },
         { :author => "Zee Spencer", :quote => "I have no idea what I'm doing..." }]
 
-##
-# Case insensitive search. Returns an array of quotes. Allows `terms` to be URI
-# Encoded.
-#   See: http://ruby-doc.org/stdlib-2.1.2/libdoc/uri/rdoc/URI/Escape.html#method-i-unescape
-# Examples:
-#   search("Analytical%20Engine") # => [ { :quote => "The Analytical Engine...", ... }, ...]
-#   search("Programming") # => [ {:quote => "To me programming...", ... }, ...]
+def search_parser(terms)
+  results_array = []
+  terms_array = terms.split(' ')
+
+  terms_array.each do |each_term|
+
+    search(each_term).each do |each_result|
+
+      results_array.push(each_result)
+    end
+
+  end
+  results_array.uniq
+end
 
 def search(terms)
   QUOTES.select do |quote|
     quote[:quote].downcase.include?(URI.unescape(terms.downcase))
   end
 end
-
-##
-# Converts an author string into a comparable offer string. Supports URI
-# Escaped author names.
-#
-# Examples:
-#  comparable_author("Zee Spencer") # => "zee-spencer"
-#  comparable_author("Ada Lovelace") # => "ada-lovelace"
-#  comparable_author("E.%20W.%20Dijkstra") # => "e-w-dijkstra"
 
 def comparable_author(author)
   decoded_author = URI.unescape(author)
@@ -75,22 +73,34 @@ def comparable_author(author)
   author_with_non_alpha_chars_stripped
 end
 
-
-##
-# Searches quotes by author. Returns an array of quotes. Converts `author` to be
-# lowercase letters and dashes.
-#
-# Examples:
-#   * quotes_by("ada-lovelace") # => [ ... ]
-#   * quotes_by("e-w-dijkstra") # => [ ... ]
-
 def quotes_by(author)
   QUOTES.select do |quote|
-    comparable_author(quotes[:author]) == comparable_author(author)
+    comparable_author(quote[:author]) == comparable_author(author)
   end
 end
 
 get "/" do
-  @quotes = []
+  @quotes = QUOTES
+  @cool_searches = ['computing', 'debugging', 'flexibility', 'productive']
+  @authors =
   erb :home
 end
+
+get "/search" do
+  @unique_results = search_parser(params[:terms])
+
+  erb :show_results
+end
+
+get "/author/:author" do
+  @author = params[:author]
+  @results = quotes_by(@author)
+
+  erb :author_page
+
+end
+
+
+
+
+
