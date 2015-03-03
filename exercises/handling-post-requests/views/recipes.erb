@@ -7,4 +7,25 @@
 <% end %>
 
 <h2>Add Your Own!</h2>
-<p>Oh wait, there isn't a form here...</p>
+<br>
+
+<form method="POST" action="/recipes">
+  <label>Created by</label>
+  <br>
+  <input type="text" name="created_by">
+  <br>
+  <label>Title</label>
+  <br>
+  <input type="text" name="title">
+  <br>
+  <label>Description</label>
+  <br>
+  <input type="text" name="description">
+  <br>
+  <label>Instructions</label>
+  <br>
+  <input type="text" name="instructions">
+  <br>
+  <button>Submit</button>
+</form>
+
